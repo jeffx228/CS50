@@ -220,7 +220,7 @@ def register():
             return apology("Passwords must match", 400)
 
 
-        if len("SELECT * FROM users WHERE username = ?", request.form.get("username")) != 0:
+        if db.execute("SELECT COUNT(*) FROM users WHERE username = ?", request.form.get("username"))[0]['COUNT(*)'] != 0:
             return apology("Duplicate username", 400)
 
 
