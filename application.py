@@ -67,7 +67,7 @@ def index():
 def buy():
     if request.method == "POST":
         # receives quote
-        buy = request.form.get("buy")
+        buy = request.form.get("symbol")
 
         # checks if this is a real quote
         if (lookup(buy) is None):
@@ -180,7 +180,7 @@ def logout():
 def quote():
     if request.method == "POST":
         # receives quote
-        quote = request.form.get("quote")
+        quote = request.form.get("symbol")
 
         # checks if this is a real quote
         if (lookup(quote) is None):
@@ -203,18 +203,25 @@ def register():
 
         # Ensure username was submitted
         if not request.form.get("username"):
-            return apology("must provide username", 403)
+            return apology("must provide username", 400)
 
         # Ensure password was submitted
         elif not request.form.get("password"):
-            return apology("must provide password", 403)
+            return apology("must provide password", 400)
+
+        elif not request.form.get("confirmation"):
+            return apology("must provide confirmation password", 400)
 
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
         # Add username and password to database
         if (password != confirmation):
-            return apology("Passwords must match", 403)
+            return apology("Passwords must match", 400)
+
+
+        if len("SELECT * FROM users WHERE username = ?", request.form.get("username")) != 0:
+            return apology("Duplicate username", 400)
 
 
         db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", request.form.get("username"), generate_password_hash(password))
