@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quoted
+{% endblock %}
+
+{% block main %}
+    <h2>Stocks and their Prices</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Quotes</th>
+                            <th>Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- TODO: Loop through the database entries to display them in this table -->
+                        <tr>
+                            <td>
+                                {{entries['symbol']}}
+                            </td>
+                            <td>
+                                {{entries['name']}} : {{entries['price'] |  usd}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+{% endblock %}

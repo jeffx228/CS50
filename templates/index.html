@@ -1,0 +1,37 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Your Stonks
+{% endblock %}
+
+{% block main %}
+    <h2>All Of Your Stonks</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cash : {{my_cash | usd}}</th>
+                            <th>Net Worth : {{my_net | usd}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- TODO: Loop through the database entries to display them in this table -->
+                        {% for row in entries %}
+                        <tr>
+                            <td>
+                                {{row["symbol"]}}
+                            </td>
+                            <td>
+                                {{row["shares"]}} : {{row["price"] | usd}}
+
+
+                            </td>
+                            <td>
+                                {{(row["shares"] * row["price"]) | usd}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+{% endblock %}
+
