@@ -71,7 +71,7 @@ def buy():
 
         # checks if this is a real quote
         if (lookup(buy) is None):
-            return apology("Please enter in a valid stock abbreviation", 403)
+            return apology("Please enter in a valid stock abbreviation", 400)
 
         shares = request.form.get("shares")
 
@@ -80,7 +80,7 @@ def buy():
         balance = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"]
 
         if not (shares.isdigit()):
-            return apology("Please enter in a postiive integer", 403)
+            return apology("Please enter in a postiive integer", 400)
 
         total_price = int(shares) * share_price
 
@@ -184,7 +184,7 @@ def quote():
 
         # checks if this is a real quote
         if (lookup(quote) is None):
-            return apology("Please enter in a valid stock abbreviation", 403)
+            return apology("Please enter in a valid stock abbreviation", 400)
 
         else:
             stock = lookup(quote)
@@ -243,14 +243,14 @@ def sell():
 
         # checks if this is a real quote
         if (lookup(sell) is None):
-            return apology("Please enter in a valid stock abbreviation", 403)
+            return apology("Please enter in a valid stock abbreviation", 400)
 
         shares = request.form.get("shares")
 
         stonks = db.execute("SELECT * FROM stonks WHERE user_id = ? AND symbol = ?", session["user_id"], lookup(sell)["symbol"])
 
         if not shares.isdigit() or int(shares) > stonks[0]["shares"]:
-            return apology("Choose a positive integer less than or equal to the number of shares you own", 403)
+            return apology("Choose a positive integer less than or equal to the number of shares you own", 400)
 
 
         share_price = lookup(sell)["price"]
