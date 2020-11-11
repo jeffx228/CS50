@@ -51,7 +51,8 @@ def index():
     entries = db.execute("SELECT * FROM stonks WHERE user_id = ?", session["user_id"])
     for row in entries:
         value = lookup(row["symbol"])
-        db.execute("UPDATE stonks SET price = ? WHERE user_id = ? AND symbol = ?", value["price"], session["user_id"], value["symbol"])
+        db.execute("UPDATE stonks SET price = ? WHERE user_id = ? AND symbol = ?",
+                   value["price"], session["user_id"], value["symbol"])
         my_net += row["shares"] * value["price"]
 
     my_cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"]
@@ -59,7 +60,7 @@ def index():
 
     entries = db.execute("SELECT * FROM stonks WHERE user_id = ?", session["user_id"])
 
-    return render_template("index.html", my_cash = my_cash, my_net = my_net, entries = entries)
+    return render_template("index.html", my_cash=my_cash, my_net=my_net, entries=entries)
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -92,13 +93,16 @@ def buy():
         db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, session["user_id"])
 
         if len(db.execute("SELECT id FROM stonks WHERE user_id = ? AND symbol = ?", session["user_id"], lookup(buy)["symbol"])) == 0:
-            db.execute("INSERT INTO stonks (symbol, user_id, shares) VALUES (?, ?, ?)", lookup(buy)["symbol"], session["user_id"], shares)
+            db.execute("INSERT INTO stonks (symbol, user_id, shares) VALUES (?, ?, ?)", 
+                       lookup(buy)["symbol"], session["user_id"], shares)
 
         else:
-            db.execute("UPDATE stonks SET shares = shares + ? WHERE user_id = ? AND symbol = ?", shares, session["user_id"], lookup(buy)["symbol"])
+            db.execute("UPDATE stonks SET shares = shares + ? WHERE user_id = ? AND symbol = ?",
+                       shares, session["user_id"], lookup(buy)["symbol"])
 
         # update database
-        db.execute("INSERT INTO transactions VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", lookup(buy)["symbol"], lookup(buy)["price"], shares, session["user_id"])
+        db.execute("INSERT INTO transactions VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", 
+                   lookup(buy)["symbol"], lookup(buy)["price"], shares, session["user_id"])
 
         return redirect("/")
 
@@ -110,7 +114,8 @@ def buy():
 @login_required
 def history():
     transactions = db.execute("SELECT * FROM transactions WHERE user_id = ? ORDER BY time DESC", session["user_id"])
-    return render_template("history.html", transactions = transactions)
+    return render_template("history.html", transactions=transactions)
+    
 
 @app.route("/inject", methods=["GET", "POST"])
 @login_required
@@ -127,6 +132,7 @@ def inject():
 
     else:
         return render_template("inject.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -188,7 +194,7 @@ def quote():
 
         else:
             stock = lookup(quote)
-            return render_template("quoted.html", entries = stock)
+            return render_template("quoted.html", entries=stock)
 
     else:
         return render_template("quote.html")
@@ -219,19 +225,17 @@ def register():
         if (password != confirmation):
             return apology("Passwords must match", 400)
 
-
         if db.execute("SELECT COUNT(*) FROM users WHERE username = ?", request.form.get("username"))[0]['COUNT(*)'] != 0:
             return apology("Duplicate username", 400)
 
-
-        db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", request.form.get("username"), generate_password_hash(password))
+        db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", 
+                   request.form.get("username"), generate_password_hash(password))
 
         return render_template("login.html")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("register.html")
-
 
 
 @app.route("/sell", methods=["GET", "POST"])
@@ -252,7 +256,6 @@ def sell():
         if not shares.isdigit() or int(shares) > stonks[0]["shares"]:
             return apology("Choose a positive integer less than or equal to the number of shares you own", 400)
 
-
         share_price = lookup(sell)["price"]
 
         balance = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"]
@@ -263,19 +266,21 @@ def sell():
 
         db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, session["user_id"])
 
-        db.execute("UPDATE stonks SET shares = shares - ? WHERE user_id = ? AND symbol = ?", shares, session["user_id"], lookup(sell)["symbol"])
+        db.execute("UPDATE stonks SET shares = shares - ? WHERE user_id = ? AND symbol = ?",
+                   shares, session["user_id"], lookup(sell)["symbol"])
 
         if db.execute("SELECT * FROM stonks WHERE user_id = ? AND symbol = ?", session["user_id"], lookup(sell)["symbol"])[0]["shares"] == 0:
             db.execute("DELETE FROM stonks WHERE user_id = ? AND symbol = ?", session["user_id"], lookup(sell)["symbol"])
 
         # update database
-        db.execute("INSERT INTO transactions VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", lookup(sell)["symbol"], lookup(sell)["price"], -int(shares), session["user_id"])
+        db.execute("INSERT INTO transactions VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)", lookup(
+            sell)["symbol"], lookup(sell)["price"], -int(shares), session["user_id"])
 
         return redirect("/")
 
     else:
         stonks = db.execute("SELECT * FROM stonks WHERE user_id = ?", session["user_id"])
-        return render_template("sell.html", stonks = stonks)
+        return render_template("sell.html", stonks=stonks)
 
 
 def errorhandler(e):
