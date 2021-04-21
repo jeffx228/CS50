@@ -1,0 +1,1 @@
+Aggregation of code I wrote for CS50 when I took it fall 2020. 
