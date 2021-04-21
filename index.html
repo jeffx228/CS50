@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+        <title>Trivia!</title>
+
+        <script>
+
+            function check1(){
+                document.getElementById('correctMessage').style.display = 'none';
+                document.getElementById("a1").style.backgroundColor = "#ff0000";
+                document.getElementById('incorrectMessage').style.display = 'block';
+            }
+            function check2(){
+                document.getElementById('correctMessage').style.display = 'none';
+                document.getElementById("a2").style.backgroundColor = "#ff0000";
+                document.getElementById('incorrectMessage').style.display = 'block';
+            }
+
+            function check3(){
+                document.getElementById('correctMessage').style.display = 'none';
+                document.getElementById("a3").style.backgroundColor = "#ff0000";
+                document.getElementById('incorrectMessage').style.display = 'block';
+            }
+
+            function check4(){
+                document.getElementById('correctMessage').style.display = 'none';
+                document.getElementById("a4").style.backgroundColor = "#ff0000";
+                document.getElementById('incorrectMessage').style.display = 'block';
+            }
+
+            function check5(){
+                document.getElementById("a5").style.backgroundColor = "#00ff00";
+                document.getElementById('incorrectMessage').style.display = 'none';
+                document.getElementById('correctMessage').style.display = 'block';
+            }
+
+            function shortAnswer(){
+                if (document.getElementById('answer').value == "Barack Obama"){
+                    document.getElementById('incorrectMessage1').style.display = 'none';
+                    document.getElementById('correctMessage1').style.display = 'block';
+                }
+                else{
+                    document.getElementById('correctMessage1').style.display = 'none';
+                    document.getElementById('incorrectMessage1').style.display = 'block';
+                }
+            }
+
+        </script>
+
+    </head>
+    <body>
+
+        <div class="jumbotron">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+
+            <div class="section">
+                <h2>Part 1: Multiple Choice </h2>
+                <hr>
+
+                <h3>
+                    Which of the following is not a colligative property of solutions?
+                </h3>
+                <button id = "a1" class="incorrect1" onclick="check1()">Vapor Pressure Lowering<br></button>
+                <button id = "a2"class="incorrect2" onclick="check2()">Boiling Point Elevation<br></button>
+                <button id = "a3"class="incorrect3" onclick="check3()">Freezing Point Depression<br></button>
+                <button id = "a4"class="incorrect4" onclick="check4()">Osmotic Pressure<br></button>
+                <button id = "a5"class="correct" onclick="check5()">Enthalpy<br></button>
+                <p id = 'correctMessage' class = 'correctness'>Correct!</p>
+                <p id = 'incorrectMessage' class = 'correctness'>Incorrect!</p>
+            </div>
+
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr>
+
+                <h3>
+                    Which president (first and last name) was the first to add a basketball court to the White House?
+                </h3>
+                <input id = "answer">
+                <button onclick = "shortAnswer()">Check</button>
+                <p id = 'correctMessage1' class = 'correctness1'>Correct!</p>
+                <p id = 'incorrectMessage1' class = 'correctness1'>Incorrect.</p>
+            </div>
+
+        </div>
+    </body>
+</html>
