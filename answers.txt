@@ -1,0 +1,18 @@
+sort1 uses: Bubble Sort
+
+How do you know?: The real runtime is much slower than both other sorts for a reversed or shuffled stack of numbers. This indicates a bubble sort because bubble sort is O(n^2).
+However, for an already sorted list, the sort is a lot faster. This is likely due to the sort being a modified bubble sort which breaks out of checking when it finds that 
+all of the numbers are already in order. This explains the drastically shorter runtime for a pre-sorted list compared to a reversed or shuffled list. 
+
+sort2 uses: Merge Sort
+
+How do you know?: Merge sort is overall the fastest. We noticed that this was consistent with the results we got for sort2. This is because the run-time of merge sort is the fastest, 
+being on the order of O(nlogn). For longer shuffled or reversed lists of numbers, merge sort is better by far, sometimes by 10x or more. This is because merge sort is on an entirely 
+different scale in terms of run time. n log n beats n^2 by a long shot, and both of the other sorts are on the order of n^2 or a constant multiple of n^2. 
+
+sort3 uses: Selection Sort
+
+How do you know?: Sort3 was the medium fast sort. We expect selection sort to be faster than bubble sort for a general list of reversed or scrambled numbers. This is because selection 
+sort's tasks gradually become lighter as i iterates through the list, since there are less numbers to compare the number indexed at i to. Also, the speed does not change when the list is already sorted,
+indicating that it is still checking and comparing as it iterates through the list. Since selection sort slowly decreases, it would be on the order of something like that following (n + n-1 + n-2 + ...).
+This would end up being around n^2/2. This checks out because the general runtime for selection sort is about half of that of bubble sort. Thus, this sort3 is likely selection sort.
